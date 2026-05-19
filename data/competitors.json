@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Musée du Louvre",
+    "price_adult": 22,
+    "price_youth": 17,
+    "category": "Musée"
+  },
+  {
+    "name": "Château de Versailles",
+    "price_adult": 21,
+    "price_youth": 16,
+    "category": "Monument"
+  },
+  {
+    "name": "Arc de Triomphe",
+    "price_adult": 16,
+    "price_youth": 13,
+    "category": "Monument"
+  },
+  {
+    "name": "Disneyland Paris (1j)",
+    "price_adult": 105,
+    "price_youth": 95,
+    "category": "Parc"
+  },
+  {
+    "name": "Bateaux Mouches",
+    "price_adult": 15,
+    "price_youth": 7,
+    "category": "Croisière"
+  },
+  {
+    "name": "Catacombes de Paris",
+    "price_adult": 29,
+    "price_youth": 23,
+    "category": "Monument"
+  },
+  {
+    "name": "Sainte-Chapelle",
+    "price_adult": 13,
+    "price_youth": 11,
+    "category": "Monument"
+  },
+  {
+    "name": "Centre Pompidou",
+    "price_adult": 15,
+    "price_youth": 12,
+    "category": "Musée"
+  },
+  {
+    "name": "Panthéon",
+    "price_adult": 13,
+    "price_youth": 11,
+    "category": "Monument"
+  },
+  {
+    "name": "Musée d'Orsay",
+    "price_adult": 16,
+    "price_youth": 13,
+    "category": "Musée"
+  }
+]

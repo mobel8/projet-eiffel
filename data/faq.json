@@ -1,0 +1,77 @@
+[
+  {
+    "question": "Quels sont les horaires d'ouverture de la Tour Eiffel ?",
+    "answer": "La Tour Eiffel est ouverte tous les jours de 9h30 à 23h45 (dernière montée à 22h30 en ascenseur, 22h00 à pied). En haute saison (mi-juin à début septembre), elle ouvre dès 9h00.",
+    "category": "Horaires"
+  },
+  {
+    "question": "Combien coûte un billet pour la Tour Eiffel ?",
+    "answer": "Les tarifs 2026 sont : Adulte sommet 35,30€ (ascenseur), 22,40€ (escalier). Jeune 12-24 ans : 17,70€ (ascenseur sommet). Enfant 4-11 ans : 8,90€. Gratuit pour moins de 4 ans.",
+    "category": "Tarifs"
+  },
+  {
+    "question": "Comment réserver mes billets pour la Tour Eiffel ?",
+    "answer": "Réservation fortement recommandée sur le site officiel toureiffel.paris jusqu'à 60 jours à l'avance. Cela évite les longues files d'attente sur place.",
+    "category": "Billetterie"
+  },
+  {
+    "question": "La Tour Eiffel est-elle accessible aux personnes à mobilité réduite ?",
+    "answer": "Oui, les 1er et 2ème étages sont accessibles en fauteuil roulant via les ascenseurs. Le 3ème étage (sommet) n'est malheureusement pas accessible aux fauteuils. Tarif réduit pour les PMR et leur accompagnant.",
+    "category": "Accessibilité"
+  },
+  {
+    "question": "Y a-t-il des restaurants dans la Tour Eiffel ?",
+    "answer": "Oui, plusieurs options : Madame Brasserie au 1er étage (cuisine bistronomique), Le Jules Verne au 2ème étage (étoilé Michelin, chef Frédéric Anton), et plusieurs buffets/snacks à chaque étage.",
+    "category": "Restauration"
+  },
+  {
+    "question": "Combien de temps faut-il prévoir pour la visite ?",
+    "answer": "Comptez entre 2h30 et 4h pour une visite complète incluant les 3 étages, les files d'attente et le temps sur place. Plus en haute saison.",
+    "category": "Visite"
+  },
+  {
+    "question": "Quelle est la meilleure heure pour visiter la Tour Eiffel ?",
+    "answer": "Pour éviter la foule : ouverture (9h30) ou en soirée après 21h. Pour la vue : 1h avant le coucher du soleil pour profiter du jour ET de la nuit avec les illuminations.",
+    "category": "Visite"
+  },
+  {
+    "question": "La Tour Eiffel scintille-t-elle vraiment ?",
+    "answer": "Oui ! Le scintillement doré a lieu pendant 5 minutes au début de chaque heure, de la tombée de la nuit jusqu'à 23h (1h en été). 20 000 ampoules s'allument simultanément.",
+    "category": "Animations"
+  },
+  {
+    "question": "Quelle est la hauteur exacte de la Tour Eiffel ?",
+    "answer": "330 mètres avec l'antenne (depuis 2022). 300 mètres jusqu'au sommet de la structure. Construite en 1889 par Gustave Eiffel pour l'Exposition Universelle.",
+    "category": "Histoire"
+  },
+  {
+    "question": "Peut-on monter à la Tour Eiffel à pied ?",
+    "answer": "Oui, vous pouvez monter par les escaliers jusqu'au 2ème étage (674 marches). Tarif réduit : 22,40€ adulte. Le 3ème étage n'est accessible qu'en ascenseur.",
+    "category": "Accès"
+  },
+  {
+    "question": "Y a-t-il un parking à proximité de la Tour Eiffel ?",
+    "answer": "Pas de parking dédié. Parkings publics à proximité : Quai Branly, Pont d'Iéna, Tour Eiffel Bir-Hakeim. Le métro (Bir-Hakeim ligne 6) ou RER C (Champ de Mars) est recommandé.",
+    "category": "Accès"
+  },
+  {
+    "question": "What are the opening hours of the Eiffel Tower?",
+    "answer": "The Eiffel Tower is open daily from 9:30am to 11:45pm (last elevator up at 10:30pm). In high season (mid-June to early September), it opens at 9:00am.",
+    "category": "Hours"
+  },
+  {
+    "question": "How much does an Eiffel Tower ticket cost?",
+    "answer": "2026 prices: Adult top floor 35.30€ (elevator), 22.40€ (stairs). Youth 12-24: 17.70€. Child 4-11: 8.90€. Free under 4. Book online to skip the queue.",
+    "category": "Prices"
+  },
+  {
+    "question": "Is the Eiffel Tower wheelchair accessible?",
+    "answer": "Yes, the 1st and 2nd floors are wheelchair accessible via elevators. The summit (3rd floor) is unfortunately not accessible. Reduced rate for disabled visitors and their companion.",
+    "category": "Accessibility"
+  },
+  {
+    "question": "Que voit-on depuis le sommet de la Tour Eiffel ?",
+    "answer": "Par temps clair, vue panoramique à 360° jusqu'à 70 km : Sacré-Cœur, Notre-Dame, Arc de Triomphe, La Défense, Versailles. Au sommet, le bureau de Gustave Eiffel a été reconstitué.",
+    "category": "Visite"
+  }
+]

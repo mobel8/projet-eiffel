@@ -1,0 +1,130 @@
+{
+  "sentiment": {
+    "f1_macro": 0.9987009107927894,
+    "f1_weighted": 0.999001128289266,
+    "report": {
+      "negative": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 228.0
+      },
+      "neutral": {
+        "precision": 0.9938650306748467,
+        "recall": 1.0,
+        "f1-score": 0.9969230769230769,
+        "support": 162.0
+      },
+      "positive": {
+        "precision": 1.0,
+        "recall": 0.9983606557377049,
+        "f1-score": 0.9991796554552912,
+        "support": 610.0
+      },
+      "accuracy": 0.999,
+      "macro avg": {
+        "precision": 0.9979550102249489,
+        "recall": 0.9994535519125683,
+        "f1-score": 0.9987009107927894,
+        "support": 1000.0
+      },
+      "weighted avg": {
+        "precision": 0.9990061349693251,
+        "recall": 0.999,
+        "f1-score": 0.999001128289266,
+        "support": 1000.0
+      }
+    }
+  },
+  "topic": {
+    "f1_macro": 0.9908016272412503,
+    "f1_weighted": 0.9970610164384058,
+    "report": {
+      "Ascenseurs": {
+        "precision": 0.9767441860465116,
+        "recall": 1.0,
+        "f1-score": 0.9882352941176471,
+        "support": 42.0
+      },
+      "Expérience globale": {
+        "precision": 1.0,
+        "recall": 0.9953917050691244,
+        "f1-score": 0.9976905311778291,
+        "support": 217.0
+      },
+      "File d'attente": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 63.0
+      },
+      "Général": {
+        "precision": 1.0,
+        "recall": 0.9876543209876543,
+        "f1-score": 0.9937888198757764,
+        "support": 162.0
+      },
+      "Personnel / Accueil": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 159.0
+      },
+      "Prix / Tarification": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 58.0
+      },
+      "Propreté": {
+        "precision": 0.8823529411764706,
+        "recall": 1.0,
+        "f1-score": 0.9375,
+        "support": 15.0
+      },
+      "Sécurité": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 50.0
+      },
+      "Vue / Panorama": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 234.0
+      },
+      "accuracy": 0.997,
+      "macro avg": {
+        "precision": 0.9843441252469981,
+        "recall": 0.9981162251174199,
+        "f1-score": 0.9908016272412503,
+        "support": 1000.0
+      },
+      "weighted avg": {
+        "precision": 0.9972585499316006,
+        "recall": 0.997,
+        "f1-score": 0.9970610164384058,
+        "support": 1000.0
+      }
+    }
+  },
+  "n_train": 4000,
+  "n_test": 1000,
+  "classes_sentiment": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "classes_topic": [
+    "Ascenseurs",
+    "Expérience globale",
+    "File d'attente",
+    "Général",
+    "Personnel / Accueil",
+    "Prix / Tarification",
+    "Propreté",
+    "Sécurité",
+    "Vue / Panorama"
+  ]
+}
