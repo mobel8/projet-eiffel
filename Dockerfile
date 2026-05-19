@@ -10,11 +10,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
-# Installe les dépendances dans un venv isolé
+# Installe les dépendances dans un venv isolé (gunicorn inclus pour la prod)
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir gunicorn==21.2.0
 
 # --- Stage 2 : runtime ----------------------------------------------------- #
 FROM python:3.12-slim AS runtime
@@ -44,7 +45,5 @@ EXPOSE 5050
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5050/api/health', timeout=3)" || exit 1
 
-# Gunicorn pour la prod (4 workers, timeout 60s)
-RUN pip install --no-cache-dir gunicorn==21.2.0
-
+# Gunicorn (déjà installé dans le venv builder), 2 workers x 4 threads
 CMD ["gunicorn", "--bind", "0.0.0.0:5050", "--workers", "2", "--threads", "4", "--timeout", "60", "--access-logfile", "-", "backend.app:app"]
