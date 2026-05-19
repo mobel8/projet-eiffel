@@ -99,31 +99,39 @@ def main() -> None:
     model = get_peft_model(model, lora_config)
     model.print_trainable_parameters()
 
+    # On reste léger pour le démo (1 epoch + petit batch) — CPU friendly
     training_args = TrainingArguments(
         output_dir=str(ARTIFACTS),
-        num_train_epochs=3,
-        per_device_train_batch_size=16,
-        per_device_eval_batch_size=32,
+        num_train_epochs=1,
+        per_device_train_batch_size=8,
+        per_device_eval_batch_size=16,
         learning_rate=5e-4,
         weight_decay=0.01,
         eval_strategy="epoch",
         save_strategy="epoch",
         load_best_model_at_end=True,
         metric_for_best_model="f1_macro",
-        logging_steps=50,
+        logging_steps=100,
         report_to="none",
         fp16=torch.cuda.is_available(),
     )
 
-    trainer = Trainer(
+    # transformers 5.x : `tokenizer` renommé en `processing_class`
+    import inspect
+    trainer_kwargs = dict(
         model=model,
         args=training_args,
         train_dataset=train_ds,
         eval_dataset=test_ds,
-        tokenizer=tokenizer,
         data_collator=DataCollatorWithPadding(tokenizer),
         compute_metrics=compute_metrics,
     )
+    sig = inspect.signature(Trainer.__init__)
+    if "processing_class" in sig.parameters:
+        trainer_kwargs["processing_class"] = tokenizer
+    else:
+        trainer_kwargs["tokenizer"] = tokenizer
+    trainer = Trainer(**trainer_kwargs)
 
     trainer.train()
     eval_results = trainer.evaluate()
