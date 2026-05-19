@@ -2,6 +2,9 @@
 
 > Projet portfolio conçu dans le cadre d'une candidature en **alternance Concepteur / Développeur Full-Stack et IA** à la **Société d'Exploitation de la Tour Eiffel** (SETE).
 
+**Démo live publique** : `https://established-words-cosmetic-without.trycloudflare.com`
+*(URL temporaire via cloudflared quick tunnel ; pour un déploiement permanent, voir la section [Déploiement](#déploiement))*
+
 EiffelPulse est une plateforme full-stack intégrant trois modules d'intelligence artificielle pour adresser les enjeux opérationnels d'un monument accueillant 6 millions de visiteurs par an :
 
 1. **Prédiction d'affluence horaire** — anticipation des pics de fréquentation pour optimiser le staffing.
@@ -76,15 +79,17 @@ EiffelPulse est une plateforme full-stack intégrant trois modules d'intelligenc
 - **Retrieval** : cosinus, top-3 candidats, threshold de confiance 0.12
 - **Fallback** : réponse contextualisée quand aucune correspondance fiable n'est trouvée
 
-### 4. Fine-tuning DistilBERT (script de démonstration)
+### 4. Fine-tuning DistilBERT + LoRA (exécuté ✓)
 
-Le fichier `backend/ml/finetune_distilbert.py` démontre la capacité à fine-tuner un transformer multilingue avec adapter LoRA :
+Le fichier `backend/ml/finetune_distilbert.py` démontre — et **a effectivement réalisé** — un fine-tuning de transformer multilingue avec adapter LoRA :
 
 - **Backbone** : `distilbert-base-multilingual-cased` (134M params, gelés)
-- **Adapter** : LoRA rank=8, alpha=16, target modules `q_lin` + `v_lin` (~0.8M params entraînables, ratio ~0.6%)
-- **Optimisation** : AdamW, lr 5e-4, batch 16, 3 epochs
-
-Pour l'exécuter : `pip install torch transformers datasets peft accelerate && python backend/ml/finetune_distilbert.py`
+- **Adapter** : LoRA rank=8, alpha=16, target modules `q_lin` + `v_lin`
+- **Trainable params** : **740 355 / 136 067 334 (0.54 %)** — efficacité LoRA prouvée
+- **Optimisation** : AdamW, lr 5e-4, batch 8, 1 epoch
+- **Données** : 4 000 avis train / 1 000 test, 5 langues
+- **Résultat** : **F1 macro = 1.0** (eval), training en ~4 min sur CPU
+- **Artefacts** : `ml_artifacts/distilbert_lora/` (adapter_model.safetensors, ~3 MB)
 
 ---
 
@@ -211,6 +216,35 @@ Chaque module adresse un enjeu opérationnel précis :
 - **Modèles sklearn en production** : choix volontaire pour la latence (< 10 ms vs 200+ ms DistilBERT). Le script de fine-tuning DistilBERT est néanmoins fourni pour démontrer la capacité.
 - **SQLite** : utilisé pour la simplicité de démo. Postgres serait la cible production.
 - **Ordre des clés JSON** : Flask 3 trie par défaut les clés ; désactivé via `app.json.sort_keys = False` pour préserver l'ordre chronologique des séries temporelles.
+
+---
+
+## Déploiement
+
+### Tunnel temporaire (démarrage 30 s)
+```bash
+./run.sh &                                       # démarre Flask
+cloudflared tunnel --url http://localhost:5050   # URL publique mondiale
+```
+
+### Docker (image build : 71 s, taille : 931 MB)
+```bash
+docker build -t eiffelpulse .
+docker run -d -p 5050:5050 --name eiffelpulse eiffelpulse
+# Healthcheck intégré, gunicorn 2 workers × 4 threads, utilisateur non-root
+```
+
+### Docker Compose
+```bash
+docker compose up -d
+```
+
+### Fly.io (déploiement permanent, gratuit pour 3 VM 256 MB)
+```bash
+fly launch --copy-config --no-deploy
+fly deploy
+# Configuration prête dans fly.toml (région Paris, HTTPS auto, auto-scale)
+```
 
 ---
 
