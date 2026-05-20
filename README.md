@@ -95,6 +95,9 @@ Le fichier `backend/ml/finetune_distilbert.py` démontre — et **a effectivemen
 
 ## Endpoints API
 
+**24 routes** exposées par le backend Flask.
+
+### Endpoints métier (IA + données internes)
 | Méthode | Route | Description |
 |---|---|---|
 | `GET` | `/api/health` | Health check |
@@ -109,6 +112,18 @@ Le fichier `backend/ml/finetune_distilbert.py` démontre — et **a effectivemen
 | `GET` | `/api/dashboard/reviews/latest?sentiment=...&limit=...` | Derniers avis filtrés |
 | `GET` | `/api/dashboard/competitors` | Comparatif tarifaire |
 | `GET` | `/api/scraper/competitors` | État du scraper Selenium |
+
+### Endpoints APIs externes (live)
+| Méthode | Route | Source | Description |
+|---|---|---|---|
+| `GET` | `/api/external/health` | toutes | État des 5 sources externes |
+| `GET` | `/api/external/weather` | Open-Meteo | Météo Paris + prévi 7 jours + impact affluence |
+| `GET` | `/api/external/holidays?country=FR` | date.nager.at | Jours fériés à venir |
+| `GET` | `/api/external/holidays/multi` | date.nager.at | Fériés multi-pays (FR+GB+ES+DE+IT+US) |
+| `GET` | `/api/external/currency` | Frankfurter | Taux EUR vers 10 devises |
+| `GET` | `/api/external/currency/convert?amount=35` | Frankfurter | Conversion € vers 11 devises |
+| `GET` | `/api/external/sun-times?date=YYYY-MM-DD` | Sunrise-Sunset | Lever / coucher / golden hour |
+| `GET` | `/api/external/wiki?lang=fr` | Wikipedia | Extrait Tour Eiffel FR/EN |
 
 ---
 
