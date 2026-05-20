@@ -84,6 +84,13 @@ function eiffelApp() {
       'Combien de temps pour visiter ?',
     ],
     pricing: null,
+    weather: null,
+    sunTimes: null,
+    holidays: null,
+    wikiFact: null,
+    conversions: null,
+    ratesDate: null,
+    conversionAmount: 35.30,
     apiEndpoints: [
       { method: 'GET', path: '/api/health' },
       { method: 'POST', path: '/api/sentiment/predict' },
@@ -95,6 +102,12 @@ function eiffelApp() {
       { method: 'GET', path: '/api/chat/faq' },
       { method: 'GET', path: '/api/dashboard/reviews' },
       { method: 'GET', path: '/api/dashboard/competitors' },
+      { method: 'GET', path: '/api/external/health' },
+      { method: 'GET', path: '/api/external/weather' },
+      { method: 'GET', path: '/api/external/holidays' },
+      { method: 'GET', path: '/api/external/currency/convert' },
+      { method: 'GET', path: '/api/external/sun-times' },
+      { method: 'GET', path: '/api/external/wiki' },
     ],
     charts: {},
 
@@ -116,11 +129,43 @@ function eiffelApp() {
         this.loadHistorical(),
         this.loadLatestReviews(),
         this.loadPricing(),
+        this.loadExternalData(),
       ]);
 
       this.renderDashboardCharts();
       this.renderHistoricalCharts();
       await this.loadForecast();
+    },
+
+    async loadExternalData() {
+      const [weather, sun, hol, wiki, conv] = await Promise.all([
+        this.fetchJSON('/api/external/weather'),
+        this.fetchJSON('/api/external/sun-times'),
+        this.fetchJSON('/api/external/holidays'),
+        this.fetchJSON('/api/external/wiki?lang=fr'),
+        this.fetchJSON('/api/external/currency/convert?amount=' + this.conversionAmount),
+      ]);
+      this.weather = weather;
+      this.sunTimes = sun;
+      this.holidays = hol;
+      this.wikiFact = wiki;
+      this.conversions = conv?.conversions ?? null;
+      this.ratesDate = conv?.rates_date ?? null;
+    },
+
+    async convertCurrency() {
+      const data = await this.fetchJSON('/api/external/currency/convert?amount=' + this.conversionAmount);
+      if (data?.conversions) {
+        this.conversions = data.conversions;
+        this.ratesDate = data.rates_date;
+      }
+    },
+
+    formatCurrency(value, code) {
+      const symbols = { EUR: '€', USD: '$', GBP: '£', JPY: '¥', CNY: '¥', KRW: '₩', CHF: 'CHF', CAD: 'C$', AUD: 'A$', BRL: 'R$', INR: '₹' };
+      const num = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: code === 'JPY' || code === 'KRW' || code === 'INR' ? 0 : 2 }).format(value);
+      const sym = symbols[code] || code;
+      return code === 'EUR' ? num + ' ' + sym : sym + ' ' + num;
     },
 
     setRoute(id) {

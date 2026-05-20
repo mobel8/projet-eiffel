@@ -24,6 +24,7 @@ from flask_cors import CORS
 from backend.services import (
     chat_service,
     dashboard_service,
+    external_apis_service,
     forecast_service,
     scraper_service,
     sentiment_service,
@@ -129,6 +130,48 @@ def create_app() -> Flask:
     @app.route("/api/dashboard/competitors")
     def dashboard_competitors():
         return jsonify(dashboard_service.competitor_pricing())
+
+    # --- EXTERNAL APIs (météo, fériés, devises, soleil, wiki) ---------- #
+    @app.route("/api/external/health")
+    def external_health():
+        return jsonify(external_apis_service.health_check_all())
+
+    @app.route("/api/external/weather")
+    def external_weather():
+        return jsonify(external_apis_service.get_weather())
+
+    @app.route("/api/external/holidays")
+    def external_holidays():
+        country = request.args.get("country", "FR")
+        return jsonify(external_apis_service.get_holidays(country))
+
+    @app.route("/api/external/holidays/multi")
+    def external_holidays_multi():
+        countries_arg = request.args.get("countries")
+        countries = countries_arg.split(",") if countries_arg else None
+        return jsonify(external_apis_service.get_holidays_multi(countries))
+
+    @app.route("/api/external/currency")
+    def external_currency():
+        return jsonify(external_apis_service.get_currency_rates())
+
+    @app.route("/api/external/currency/convert")
+    def external_currency_convert():
+        try:
+            amount = float(request.args.get("amount", "35"))
+        except ValueError:
+            return jsonify({"error": "amount invalide"}), 400
+        return jsonify(external_apis_service.convert_eur(amount))
+
+    @app.route("/api/external/sun-times")
+    def external_sun():
+        target = request.args.get("date")
+        return jsonify(external_apis_service.get_sun_times(target))
+
+    @app.route("/api/external/wiki")
+    def external_wiki():
+        lang = request.args.get("lang", "fr")
+        return jsonify(external_apis_service.get_wiki_fact(lang))
 
     # --- SCRAPER -------------------------------------------------------- #
     @app.route("/api/scraper/competitors")

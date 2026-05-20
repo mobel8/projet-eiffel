@@ -1,6 +1,7 @@
 # Configuration Fly.io pour EiffelPulse
-# Déploiement permanent : `fly launch` puis `fly deploy`
-app = "eiffelpulse"
+# Déploiement permanent : `fly launch --copy-config` puis `fly deploy`
+# Note : le nom `app` est généré automatiquement par fly launch si non disponible
+app = "eiffelpulse-sete"
 primary_region = "cdg"
 
 [build]

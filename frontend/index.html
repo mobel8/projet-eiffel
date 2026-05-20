@@ -196,6 +196,82 @@
             </div>
           </div>
 
+          <!-- LIVE WIDGETS (APIs externes : météo, soleil, fériés, wikipedia) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+            <!-- Météo live -->
+            <div class="live-card" :class="weather?.impact_estimate ? 'border-l-4 border-l-' + weather.impact_estimate.color + '-400' : ''">
+              <div class="live-card-head">
+                <span class="live-tag">Live · Open-Meteo</span>
+                <span class="live-icon-big" x-text="weather?.current?.icon ?? '⏳'"></span>
+              </div>
+              <div class="live-title">Météo Paris</div>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span class="live-value" x-text="weather?.current?.temperature !== undefined ? weather.current.temperature.toFixed(1) + '°' : '—'"></span>
+                <span class="text-xs text-midnight-400" x-text="weather?.current?.label ?? ''"></span>
+              </div>
+              <div class="live-foot mt-2">
+                <span x-text="'Vent ' + (weather?.current?.wind_speed ?? '—') + ' km/h · Humidité ' + (weather?.current?.humidity ?? '—') + '%'"></span>
+              </div>
+              <div x-show="weather?.impact_estimate" class="mt-2 text-[11px] uppercase tracking-wider font-semibold"
+                   :class="weather?.impact_estimate?.color === 'emerald' ? 'text-emerald-400'
+                          : weather?.impact_estimate?.color === 'amber' ? 'text-amber-400'
+                          : weather?.impact_estimate?.color === 'rose' ? 'text-rose-400' : 'text-midnight-300'">
+                Impact affluence : <span x-text="weather?.impact_estimate?.label"></span> (×<span x-text="weather?.impact_estimate?.factor"></span>)
+              </div>
+            </div>
+
+            <!-- Soleil -->
+            <div class="live-card">
+              <div class="live-card-head">
+                <span class="live-tag">Live · Sunrise-Sunset</span>
+                <span class="live-icon-big">🌅</span>
+              </div>
+              <div class="live-title">Heures solaires</div>
+              <div class="grid grid-cols-2 gap-2 mt-2">
+                <div>
+                  <div class="text-[10px] text-midnight-400 uppercase">Lever</div>
+                  <div class="text-lg font-mono text-white" x-text="sunTimes?.sunrise ?? '—'"></div>
+                </div>
+                <div>
+                  <div class="text-[10px] text-midnight-400 uppercase">Coucher</div>
+                  <div class="text-lg font-mono text-gold-400" x-text="sunTimes?.sunset ?? '—'"></div>
+                </div>
+              </div>
+              <div class="live-foot mt-2">
+                <span x-text="'Jour : ' + (sunTimes?.day_length_hours ?? '—') + 'h · Golden hour recommandée'"></span>
+              </div>
+            </div>
+
+            <!-- Prochain férié -->
+            <div class="live-card">
+              <div class="live-card-head">
+                <span class="live-tag">Live · date.nager.at</span>
+                <span class="live-icon-big">🇫🇷</span>
+              </div>
+              <div class="live-title">Prochain jour férié</div>
+              <template x-if="holidays && holidays.upcoming && holidays.upcoming.length">
+                <div class="mt-1">
+                  <div class="text-lg font-semibold text-white" x-text="holidays.upcoming[0].name_local"></div>
+                  <div class="text-sm text-midnight-300" x-text="holidays.upcoming[0].date + ' · J+' + holidays.upcoming[0].days_until"></div>
+                </div>
+              </template>
+              <div class="live-foot mt-2">
+                <span x-text="(holidays?.upcoming?.length ?? 0) + ' fériés à venir cette année'"></span>
+              </div>
+            </div>
+
+            <!-- Wikipedia fact -->
+            <div class="live-card">
+              <div class="live-card-head">
+                <span class="live-tag">Live · Wikipedia</span>
+                <span class="live-icon-big">📚</span>
+              </div>
+              <div class="live-title">Le saviez-vous ?</div>
+              <p class="text-xs text-midnight-200 mt-1 leading-relaxed line-clamp-4" x-text="wikiFact?.extract?.slice(0, 220) + (wikiFact?.extract?.length > 220 ? '…' : '')"></p>
+              <a x-show="wikiFact?.page_url" :href="wikiFact?.page_url" target="_blank" rel="noopener" class="live-foot mt-2 inline-block hover:text-gold-400 transition">Lire sur Wikipédia ↗</a>
+            </div>
+          </div>
+
           <!-- Charts grid -->
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             <div class="card lg:col-span-2">
@@ -472,6 +548,31 @@
             <div class="kpi-card"><div class="kpi-label">Tarif Tour Eiffel</div><div class="kpi-value">35€<span class="text-base text-midnight-400 ml-1">adulte</span></div></div>
             <div class="kpi-card"><div class="kpi-label">Moy. marché</div><div class="kpi-value" x-text="pricing ? (pricing.market_avg_adult + '€') : '—'"></div></div>
             <div class="kpi-card"><div class="kpi-label">Premium</div><div class="kpi-value" :class="pricing?.eiffel_premium_pct_adult > 0 ? 'text-amber-300' : 'text-emerald-400'"><span x-text="pricing ? (pricing.eiffel_premium_pct_adult > 0 ? '+' : '') + pricing.eiffel_premium_pct_adult + '%' : '—'"></span></div></div>
+          </div>
+
+          <!-- Convertisseur de devises live -->
+          <div class="card mb-6">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Convertisseur de devises pour visiteurs internationaux</h3>
+                <p class="card-sub">Taux temps réel · Frankfurter API · base EUR</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-midnight-300">Tarif adulte sommet :</span>
+                <input type="number" x-model.number="conversionAmount" @input.debounce.300ms="convertCurrency()" min="1" max="999"
+                  class="w-20 bg-midnight-900 border border-midnight-700 text-white text-sm rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-gold-400 focus:border-gold-400 outline-none" />
+                <span class="text-sm text-midnight-300">€</span>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-3 mt-3">
+              <template x-for="(value, cur) in (conversions || {})" :key="cur">
+                <div class="conv-card" :class="cur === 'EUR' ? 'border-gold-500/50 bg-gold-500/10' : ''">
+                  <div class="conv-cur" x-text="cur"></div>
+                  <div class="conv-value" x-text="formatCurrency(value, cur)"></div>
+                </div>
+              </template>
+            </div>
+            <div x-show="ratesDate" class="text-[10px] text-midnight-500 mt-3 text-right">Taux du <span x-text="ratesDate"></span></div>
           </div>
 
           <div class="card">
