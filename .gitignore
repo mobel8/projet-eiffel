@@ -15,7 +15,6 @@ build/
 dist/
 
 # Données et artefacts ML
-data/*.csv
 ml_artifacts/distilbert_lora/
 *.joblib.tmp
 
