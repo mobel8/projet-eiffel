@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 FROM python:3.12-slim AS runtime
 
 # Sécurité : utilisateur non-root
-RUN useradd --create-home --shell /bin/bash eiffel
+RUN useradd --create-home --shell /bin/bash --uid 1000 user
 
 WORKDIR /app
 
@@ -30,20 +30,20 @@ COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PORT=5050
+    PORT=7860
 
 # Copie du code applicatif et des artefacts ML
-COPY --chown=eiffel:eiffel backend/ ./backend/
-COPY --chown=eiffel:eiffel frontend/ ./frontend/
-COPY --chown=eiffel:eiffel data/ ./data/
-COPY --chown=eiffel:eiffel ml_artifacts/ ./ml_artifacts/
+COPY --chown=user:user backend/ ./backend/
+COPY --chown=user:user frontend/ ./frontend/
+COPY --chown=user:user data/ ./data/
+COPY --chown=user:user ml_artifacts/ ./ml_artifacts/
 
-USER eiffel
+USER user
 
-EXPOSE 5050
+EXPOSE 7860
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5050/api/health', timeout=3)" || exit 1
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:7860/api/health', timeout=3)" || exit 1
 
 # Gunicorn (déjà installé dans le venv builder), 2 workers x 4 threads
-CMD ["gunicorn", "--bind", "0.0.0.0:5050", "--workers", "2", "--threads", "4", "--timeout", "60", "--access-logfile", "-", "backend.app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:7860", "--workers", "2", "--threads", "4", "--timeout", "60", "--access-logfile", "-", "backend.app:app"]

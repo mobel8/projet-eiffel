@@ -1,3 +1,15 @@
+---
+title: EiffelPulse
+emoji: 🗼
+colorFrom: blue
+colorTo: pink
+sdk: docker
+app_port: 7860
+pinned: false
+license: mit
+short_description: Plateforme IA full-stack pour la Tour Eiffel — prédiction d'affluence, analyse multilingue, RAG, fine-tuning DistilBERT+LoRA
+---
+
 # EiffelPulse — Plateforme d'aide à la décision IA pour la Tour Eiffel
 
 > Projet portfolio conçu dans le cadre d'une candidature en **alternance Concepteur / Développeur Full-Stack et IA** à la **Société d'Exploitation de la Tour Eiffel** (SETE).
