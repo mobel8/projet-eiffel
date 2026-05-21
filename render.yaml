@@ -1,0 +1,22 @@
+# Render Blueprint — déploiement en 1 clic
+# https://render.com/docs/blueprint-spec
+#
+# Usage :
+#   1. Va sur https://render.com (sign up / login avec GitHub si pas encore fait)
+#   2. Dashboard → New + → Blueprint
+#   3. Connect repo "mobel8/projet-eiffel"
+#   4. Render détecte ce fichier → crée le service auto
+#   5. Plan "Free" → URL https://eiffelpulse-xxx.onrender.com en ~5 min
+
+services:
+  - type: web
+    name: eiffelpulse
+    runtime: docker
+    region: frankfurt
+    plan: free
+    branch: main
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
