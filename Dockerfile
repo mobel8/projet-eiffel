@@ -43,7 +43,9 @@ USER user
 EXPOSE 7860
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:7860/api/health', timeout=3)" || exit 1
+    CMD python -c "import urllib.request, os; urllib.request.urlopen('http://localhost:' + os.environ.get('PORT', '7860') + '/api/health', timeout=3)" || exit 1
 
-# Gunicorn (déjà installé dans le venv builder), 2 workers x 4 threads
-CMD ["gunicorn", "--bind", "0.0.0.0:7860", "--workers", "2", "--threads", "4", "--timeout", "60", "--access-logfile", "-", "backend.app:app"]
+# Gunicorn — port dynamique via $PORT (compatible Render, Railway, Fly.io,
+# HF Spaces). HF impose 7860 (défaut), Render injecte PORT=10000.
+# Shell form pour interpolation de $PORT.
+CMD gunicorn --bind 0.0.0.0:${PORT:-7860} --workers 2 --threads 4 --timeout 60 --access-logfile - backend.app:app
