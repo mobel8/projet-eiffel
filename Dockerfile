@@ -38,6 +38,12 @@ COPY --chown=user:user frontend/ ./frontend/
 COPY --chown=user:user data/ ./data/
 COPY --chown=user:user ml_artifacts/ ./ml_artifacts/
 
+# Génère les CSV manquants (reviews.csv + attendance.csv) — ils sont en
+# .gitignore donc absents du repo. Reproductible via seed=42.
+# Cette étape doit tourner AVANT USER user pour pouvoir écrire dans /app/data.
+RUN python backend/ml/generate_data.py && \
+    chown -R user:user /app/data
+
 USER user
 
 EXPOSE 7860
